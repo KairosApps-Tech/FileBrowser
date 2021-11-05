@@ -19,12 +19,7 @@ let package = Package(
                 "Info.plist"
             ],
             resources: [
-                .copy("Resources/documents@2x.png"),
-                .copy("Resources/file@2x.png"),
-                .copy("Resources/folder@2x.png"),
-                .copy("Resources/image@2x.png"),
-                .copy("Resources/pdf@2x.png"),
-                .copy("Resources/zip@2x.png"),
+                .process("Resources")
             ]
         ),
         .testTarget(
