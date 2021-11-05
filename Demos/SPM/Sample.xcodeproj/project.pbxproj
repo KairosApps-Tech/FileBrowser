@@ -44,7 +44,7 @@
 		48A199CA1D8C546000C443D3 /* BB8.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = BB8.jpg; sourceTree = "<group>"; };
 		48A199CB1D8C546000C443D3 /* Images.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Images.zip; sourceTree = "<group>"; };
 		48A199CC1D8C546000C443D3 /* Stitch.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Stitch.jpg; sourceTree = "<group>"; };
-		974FC98D2734B76C000B9A77 /* FileBrowser */ = {isa = PBXFileReference; lastKnownFileType = folder; name = FileBrowser; path = ..; sourceTree = "<group>"; };
+		9775DEF42734C23E00D32DA5 /* FileBrowser */ = {isa = PBXFileReference; lastKnownFileType = folder; name = FileBrowser; path = ../..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,7 +62,7 @@
 		48A199A41D8C53AC00C443D3 = {
 			isa = PBXGroup;
 			children = (
-				974FC98C2734B76C000B9A77 /* Packages */,
+				9775DEF42734C23E00D32DA5 /* FileBrowser */,
 				48A199AF1D8C53AC00C443D3 /* Sample */,
 				48A199AE1D8C53AC00C443D3 /* Products */,
 			);
@@ -115,14 +115,6 @@
 				48A199C71D8C53E200C443D3 /* MainViewController.swift */,
 			);
 			name = "View Controller";
-			sourceTree = "<group>";
-		};
-		974FC98C2734B76C000B9A77 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				974FC98D2734B76C000B9A77 /* FileBrowser */,
-			);
-			name = Packages;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
