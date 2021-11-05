@@ -42,7 +42,11 @@ class FileListViewController: UIViewController {
     }
     
     convenience init (initialPath: URL, showCancelButton: Bool, allowEditing: Bool = false, showSize: Bool = false) {
+#if SWIFT_PACKAGE
         self.init(nibName: nil, bundle: .module)
+#else
+        self.init(nibName: "FileListViewController", bundle: Bundle(for: FileListViewController.self))
+#endif
         self.edgesForExtendedLayout = UIRectEdge()
         
         // Set initial path
