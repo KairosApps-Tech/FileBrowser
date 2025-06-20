@@ -22,45 +22,45 @@ class FileBrowserTests: XCTestCase {
     }
     
     func testGifFBFileParse() {
-        let filePath = Bundle(for: FileBrowserTests.self).url(forResource: "3crBXeO", withExtension: "gif")!
+        let filePath = Bundle.module.url(forResource: "3crBXeO", withExtension: "gif")!
         let file = FBFile(filePath: filePath)
         XCTAssertEqual(file.filePath, filePath)
         XCTAssertEqual(file.isDirectory, false)
-        XCTAssertEqual(file.type, FBFileType.GIF)
+        XCTAssertEqual(file.type, FBFileType.gif)
         XCTAssertEqual(file.fileExtension, "gif")
     }
     
     func testJpgFBFileParse() {
-        let filePath = Bundle(for: FileBrowserTests.self).url(forResource: "Stitch", withExtension: "jpg")!
+        let filePath = Bundle.module.url(forResource: "Stitch", withExtension: "jpg")!
         let file = FBFile(filePath: filePath)
         XCTAssertEqual(file.filePath, filePath)
         XCTAssertEqual(file.isDirectory, false)
-        XCTAssertEqual(file.type, FBFileType.JPG)
+        XCTAssertEqual(file.type, FBFileType.jpg)
         XCTAssertEqual(file.fileExtension, "jpg")
     }
     
     func testDirectoryFBFileParse() {
-        let filePath = Bundle(for: FileBrowserTests.self).bundleURL
+        let filePath = Bundle.module.bundleURL
         let file = FBFile(filePath: filePath)
-        XCTAssertEqual(file.type, FBFileType.Directory)
+        XCTAssertEqual(file.type, FBFileType.directory)
     }
     
     func testDirectoryContentsParse() {
         let parser = FileParser.sharedInstance
-        let directoryPath = Bundle(for: FileBrowserTests.self).bundleURL
+        let directoryPath = Bundle.module.bundleURL
         let directoryContents = parser.filesForDirectory(directoryPath)
         XCTAssertTrue(directoryContents.count > 0)
         let stitchFile = directoryContents.filter({$0.displayName == "Stitch.jpg"}).first
         XCTAssertNotNil(stitchFile)
         if let stitchFile = stitchFile {
-            XCTAssertEqual(stitchFile.type, FBFileType.JPG)
+            XCTAssertEqual(stitchFile.type, FBFileType.jpg)
         }
     }
 
     func testCaseSensitiveExclusion() {
         let parser = FileParser.sharedInstance
         parser.excludesFileExtensions = ["gIf"]
-        let directoryPath = Bundle(for: FileBrowserTests.self).bundleURL
+        let directoryPath = Bundle.module.bundleURL
         let directoryContents = parser.filesForDirectory(directoryPath)
         for file in directoryContents {
             if let fileExtension = file.fileExtension {

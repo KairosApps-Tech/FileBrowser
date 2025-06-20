@@ -1,6 +1,6 @@
 //
-//  FileBrowser.swift
-//  FileBrowser
+//  FileBrowserNavigationController.swift
+//  FileBrowserNavigationController
 //
 //  Created by Roy Marmelstein on 14/02/2016.
 //  Copyright © 2016 Roy Marmelstein. All rights reserved.
@@ -9,12 +9,14 @@
 import UIKit
 
 /// File browser containing navigation controller.
-open class FileBrowser: UINavigationController {
-    
+open class FileBrowserNavigationController: UINavigationController, ClosingDelegate {
+
     let parser = FileParser.sharedInstance
     
-    var fileList: FileListViewController?
-
+    var fileList: FileListTableViewController?
+    
+    var onDismiss: (() -> Void)?
+    
     /// File types to exclude from the file browser.
     open var excludesFileExtensions: [String]? {
         didSet {
@@ -36,40 +38,35 @@ open class FileBrowser: UINavigationController {
         }
     }
     
-    /// Closure to be executed when close button is tapped
-    open var didClose: (() -> ())? {
-        didSet {
-            fileList?.didClose = didClose
-        }
-    }
-
     public convenience init() {
         let parser = FileParser.sharedInstance
-        let path = parser.documentsURL()
-        self.init(initialPath: path, allowEditing: true)
+        let path = parser.documentsURL
+        self.init(initialPath: path, allowEditing: true, onDismiss: nil)
     }
-
+    
     /// Initialise file browser.
     ///
     /// - Parameters:
     ///   - initialPath: NSURL filepath to containing directory.
     ///   - allowEditing: Whether to allow editing.
     ///   - showCancelButton: Whether to show the cancel button.
-    ///   - showSize: Whether to show size for files and directories.
-    @objc public convenience init(initialPath: URL? = nil,
-                                  allowEditing: Bool = false,
-                                  showCancelButton: Bool = true,
-                                  showSize: Bool = true) {
+    public convenience init(initialPath: URL? = nil, allowEditing: Bool = false, showCloseButton: Bool = true, onDismiss: (() -> Void)?) {
+        let validInitialPath = initialPath ?? FileParser.sharedInstance.documentsURL
         
-        let validInitialPath = initialPath ?? FileParser.sharedInstance.documentsURL()
-        
-        let fileListViewController = FileListViewController(initialPath: validInitialPath,
-                                                            showCancelButton: showCancelButton,
-                                                            allowEditing: allowEditing,
-                                                            showSize: showSize)
+        let fileListViewController = FileListTableViewController(initialPath: validInitialPath, showCloseButton: showCloseButton)
 
         self.init(rootViewController: fileListViewController)
-        self.view.backgroundColor = UIColor.fileBrowserBackground()
+
+        fileListViewController.allowEditing = allowEditing
+        fileListViewController.closingDelegate = self
+
         self.fileList = fileListViewController
+        self.onDismiss = onDismiss
     }
+
+    func didTouchCloseButton() {
+        onDismiss?()
+        dismiss(animated: true)
+    }
+
 }

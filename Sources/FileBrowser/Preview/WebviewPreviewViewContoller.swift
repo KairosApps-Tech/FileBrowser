@@ -25,16 +25,18 @@ class WebviewPreviewViewContoller: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.addSubview(webView)
-        
+        view.addSubview(webView)
+
+        webView.backgroundColor = .systemBackground
+
         // Add share button
         let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(WebviewPreviewViewContoller.shareFile(_:)))
-        self.navigationItem.rightBarButtonItem = shareButton
+        navigationItem.rightBarButtonItem = shareButton
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        webView.frame = self.view.bounds
+        webView.frame = view.bounds
     }
     
     //MARK: Share
@@ -61,17 +63,13 @@ class WebviewPreviewViewContoller: UIViewController {
         }
         var rawString: String?
         
-        // Prepare plist for display
-        if file.type == .PLIST {
+        if file.type == .plist {
             do {
                 if let plistDescription = try (PropertyListSerialization.propertyList(from: data, options: [], format: nil) as AnyObject).description {
                     rawString = plistDescription
                 }
             } catch {}
-        }
-        
-        // Prepare json file for display
-        else if file.type == .JSON {
+        } else if file.type == .json {
             do {
                 let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
                 if JSONSerialization.isValidJSONObject(jsonObject) {
@@ -91,7 +89,31 @@ class WebviewPreviewViewContoller: UIViewController {
         
         // Convert and display string
         if let convertedString = convertSpecialCharacters(rawString) {
-            let htmlString = "<html><head><meta name='viewport' content='initial-scale=1.0, user-scalable=no'></head><body><pre>\(convertedString)</pre></body></html>"
+            let htmlString = """
+<html>
+<head>
+    <meta name='viewport' content='initial-scale=1.0, user-scalable=no'>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: white;
+            color: black;
+        }
+
+        /* Dark Mode automatique */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #1e1e1e;
+                color: #f5f5f5;
+            }
+        }
+    </style>
+</head>
+<body>
+    <pre>\(convertedString)</pre>
+</body>
+</html>
+"""
             webView.loadHTMLString(htmlString, baseURL: nil)
         }
         

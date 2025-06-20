@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class FileParser {
+class FileParser {
     
     static let sharedInstance = FileParser()
     
@@ -30,7 +30,7 @@ public class FileParser {
     
     let fileManager = FileManager.default
     
-    func documentsURL() -> URL {
+    var documentsURL: URL {
         return fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0] as URL
     }
     
@@ -39,7 +39,7 @@ public class FileParser {
         var filePaths = [URL]()
         // Get contents
         do  {
-            filePaths = try self.fileManager.contentsOfDirectory(at: directoryPath, includingPropertiesForKeys: [], options: [.skipsHiddenFiles])
+            filePaths = try self.fileManager.contentsOfDirectory(at: directoryPath, includingPropertiesForKeys: [], options: [])
         } catch {
             return files
         }
@@ -57,7 +57,7 @@ public class FileParser {
             }
         }
         // Sort
-        files = files.sorted(){$0.displayName < $1.displayName}
+        files = files.sorted { $0.displayName < $1.displayName }
         return files
     }
 
